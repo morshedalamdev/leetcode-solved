@@ -15,26 +15,28 @@ class Solution:
     def myAtoi(self, s: str) -> int:
         digits = ""
         sign = 1
+        sign_found = False
+        started = False
         
         for i, char in enumerate(s):
             if char == " ":
-                if digits:
+                if started:
                     break
                 continue
             
             if char == "-" or char == "+":
-                if digits:
+                if sign_found or digits:
                     break
+                sign_found = True
+                started = True
                 sign = -1 if char == "-" else 1
             elif char.isdigit():
                 digits += char
+                started = True
             else: break
             
         result = int(digits) if digits else 0
         result *= sign
-        
-        print(max(self.INT_MIN, min(result, self.INT_MAX)))
-        return("-"*25)
 
 sol = Solution()
 
