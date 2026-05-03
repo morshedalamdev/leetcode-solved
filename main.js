@@ -1,8 +1,12 @@
 /**
- * Given an integer array arr and a mapping function fn, return a new array with a transformation applied to each element.
- * The returned array should be created such that returnedArray[i] = fn(arr[i], i).
- *
- * Please solve it without the built-in Array.map method.
+Given an integer array arr and a filtering function fn, return a filtered array filteredArr.
+
+The fn function takes one or two arguments:
+ *  arr[i] - number from the arr
+ *  i - index of arr[i]
+ *  filteredArr should only contain the elements from the arr for which the expression fn(arr[i], i) evaluates to a truthy value. A truthy value is a value where Boolean(value) returns true.
+
+Please solve it without the built-in Array.filter method.
  */
 
 // SOLVED: //
@@ -11,19 +15,23 @@
  * @param {Function} fn
  * @return {number[]}
  */
-var map = function(arr, fn) {
-    let returnedArray = [];
+var filter = function(arr, fn) {
+    let filteredArr = []
     
-    for(let i = 0; i < arr.length; i++){
-        returnedArray[i] = fn(arr[i], i)
-    }
-    console.log(returnedArray)
+    arr.forEach((elt, i)=>{
+        const result = fn(elt, i)
+        if(result && result !== 0){
+            filteredArr.push(elt)
+        }
+    })
+    console.log(filteredArr)
 };
 
-function plusone(n) { return n + 1; }
-function plusI(n, i) { return n + i; }
-function constant(n, i) { return 42; }
+// TESTS: //
+function firstIndex(n, i) { return i === 0; }
+function greaterThan10(n) { return n > 10; }
+function plusOne(n) { return n + 1 }
 
-map([1,2,3], plusone)
-map([1,2,3], plusI)
-map([10,20,30], constant)
+filter([1,2,3], firstIndex)
+filter([0,10,20,30], greaterThan10)
+filter([-2,-1,0,1,2], plusOne)
