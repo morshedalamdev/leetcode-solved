@@ -1,34 +1,30 @@
 // PROBLEM //
 /**
- * Given an array of functions [f1, f2, f3, ..., fn], return a new function fn that is the function composition of the array of functions.
- * The function composition of [f(x), g(x), h(x)] is fn(x) = f(g(h(x))).
- * The function composition of an empty list of functions is the identity function f(x) = x.
- * You may assume each function in the array accepts one integer as input and returns one integer as output.
+ * Given a function fn, return a new function that is identical to the original function except that it ensures fn is called at most once.
+ * 
+ * The first time the returned function is called, it should return the same result as fn.
+ * 
+ * Every subsequent time it is called, it should return undefined.
  */
 
 // SOLVE //
 /**
- * @param {Function[]} functions
+ * @param {Function} fn
  * @return {Function}
  */
-var compose = function(functions) {
-    
-    return function(x) {
-        for(let i = functions.length - 1; i >= 0; i--){
-            const fn = functions[i];
-            x = fn(x)
-        }
-        console.log(x)
-    }
+var once = function (fn) {
+    let called = false;
+
+    return function (...args) {
+        if (called) return undefined;
+        called = true;
+        return fn(...args);
+    };
 };
 
 // TESTS //
-const fn1 = compose([x => x + 1, x => x * x, x => 2 * x])
-const fn2 = compose([x => 10 * x, x => 10 * x, x => 10 * x])
-const fn3 = compose([])
-const fn4 = compose([x => x + 1, x => 2 * x])
+let fn = (a,b,c) => (a + b + c)
+let onceFn = once(fn)
 
-fn3(42)
-fn2(1)
-fn1(4)
-fn4(4)
+onceFn(1,2,3); // 6
+onceFn(2,3,6); // returns undefined without calling fn
